@@ -1,0 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace api.Entities;
+
+public abstract class EntityBase
+{
+    [Key]
+    public int Id { get; private set; }
+}
