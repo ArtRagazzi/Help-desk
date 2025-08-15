@@ -1,0 +1,57 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace api.Entities.Mappings;
+
+public class UserMap : IEntityTypeConfiguration<User>
+{
+    public void Configure(EntityTypeBuilder<User> builder)
+    {
+        //Define o nome da tabela
+        builder.ToTable("user");
+        //Define chave primaria
+        builder.HasKey(x => x.Id);
+        //AutoIncrement ID
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
+
+
+        builder.Property(x => x.FirstName)
+            .IsRequired()
+            .HasMaxLength(50)
+            .HasColumnName("first_name")
+            .HasColumnType("varchar(50)");
+        
+        builder.Property(x => x.LastName)
+            .IsRequired()
+            .HasMaxLength(50)
+            .HasColumnName("last_name")
+            .HasColumnType("varchar(50)");
+        
+        builder.Property(x => x.Email)
+            .IsRequired()
+            .HasMaxLength(50)
+            .HasColumnName("email")
+            .HasColumnType("varchar(50)");
+
+        builder.Property(x => x.Password)
+            .IsRequired()
+            .HasColumnName("password");
+        
+        builder.Property(x => x.Phone)
+            .HasMaxLength(50)
+            .HasColumnName("phone")
+            .HasColumnType("varchar(50)");
+        
+        builder.Property(x => x.Address)
+            .HasMaxLength(150)
+            .HasColumnName("address")
+            .HasColumnType("varchar(150)");
+
+
+        builder.Property(x => x.Role)
+            .IsRequired()
+            .HasColumnName("role")
+            .HasConversion<int>();
+
+    }
+}
