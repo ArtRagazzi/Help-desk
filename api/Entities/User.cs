@@ -1,16 +1,15 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using api.Entities.Enuns;
 
 namespace api.Entities;
 
-
-[Table("tb_users")]
 public class User : EntityBase
 {
     private IList<Ticket> _tickets;
     
     
-    public User(string firstName, string lastName, string email, string password, string phone, string address, UserRole role)
+    public User(string firstName, string lastName, string email, string password, string? phone, string? address, UserRole role = UserRole.User)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -24,10 +23,12 @@ public class User : EntityBase
 
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
+    
+    [EmailAddress]
     public string Email { get; private set; }
     public string Password { get; private set; }
-    public string Phone { get; private set; }
-    public string Address { get; private set; }
+    public string? Phone { get; private set; }
+    public string? Address { get; private set; }
     public UserRole Role { get; private set; }
 
     public IReadOnlyCollection<Ticket> Tickets
@@ -51,13 +52,13 @@ public class User : EntityBase
     
     public void EditUser(User user)
     {
-        user.FirstName = FirstName;
-        user.LastName = LastName;
-        user.Email = Email;
-        user.Password = Password;
-        user.Phone = Phone;
-        user.Address = Address;
-        user.Role = Role;
+        this.FirstName = user.FirstName;
+        this.LastName = user.LastName;
+        this.Email = user.Email;
+        this.Password = user.Password;
+        this.Phone = user.Phone;
+        this.Address = user.Address;
+        this.Role = user.Role;
     }
     
 }
