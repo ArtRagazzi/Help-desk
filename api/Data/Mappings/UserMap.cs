@@ -26,12 +26,16 @@ public class UserMap : IEntityTypeConfiguration<User>
             .HasMaxLength(50)
             .HasColumnName("last_name")
             .HasColumnType("varchar(50)");
-        
+
         builder.Property(x => x.Email)
             .IsRequired()
             .HasMaxLength(50)
             .HasColumnName("email")
             .HasColumnType("varchar(50)");
+            
+        //Difine Email como unique
+        builder.HasIndex(x => x.Email)
+            .IsUnique();
 
         builder.Property(x => x.Password)
             .IsRequired()
