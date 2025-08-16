@@ -1,0 +1,64 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+.title {
+  font-family: var(--type-second);
+  line-height: 1;
+  font-size: 3rem;
+  position: relative;
+  z-index: 1;
+  margin: 1rem 0px;
+}
+
+.title::after {
+  content: "";
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  bottom: 5px;
+  left: -5px;
+  z-index: -1;
+  background: #4A4DF3;
+  border-radius: 0.2rem;
+}
+
+.login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  gap: 2rem;
+}
+
+.login-left-side {
+  /* Para usar a imagem de fundo como no seu código original */
+  background: url('../../Assets/login.png') no-repeat center center;
+  background-size: cover;
+}
+
+.login-right-side {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Centraliza horizontalmente o h1 e os inputs */
+  gap: 1.5rem;
+  /* Espaçamento entre os elementos */
+}
+
+.footerMessage {
+  background-color: #4A4DF3;
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+}
