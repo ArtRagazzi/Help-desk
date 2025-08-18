@@ -1,7 +1,8 @@
+using api.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace api.Entities.Mappings;
+namespace api.Data.Mappings;
 
 public class TicketMap : IEntityTypeConfiguration<Ticket>
 {

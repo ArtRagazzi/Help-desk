@@ -4,5 +4,5 @@ namespace api.Entities;
 
 public abstract class EntityBase
 {
-    public int Id { get; private set; }
+    public int Id { get; set; }
 }

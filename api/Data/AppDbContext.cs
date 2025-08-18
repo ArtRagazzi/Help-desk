@@ -1,8 +1,9 @@
+
+using api.Data.Mappings;
 using api.Entities;
-using api.Entities.Mappings;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Context;
+namespace api.Data;
 
 public class AppDbContext : DbContext
 {
