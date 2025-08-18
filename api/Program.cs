@@ -1,5 +1,6 @@
+
 using System.Text;
-using api.Context;
+using api.Data;
 using api.Entities.Enuns;
 using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var key = Encoding.ASCII.GetBytes(builder.Configuration["JwtSettings.SecretKey"]);
+var key = Encoding.ASCII.GetBytes(builder.Configuration["JwtSettings:SecretKey"]);
 JwtConfig(builder);
 AuthorizationConfig(builder);
 ConfigureServices(builder);
@@ -67,6 +68,7 @@ void ConfigureServices(WebApplicationBuilder builder)
     {
         options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
+    
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddControllers();
 }

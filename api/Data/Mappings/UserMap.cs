@@ -1,7 +1,9 @@
+using api.Entities;
+using api.Entities.Enuns;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace api.Entities.Mappings;
+namespace api.Data.Mappings;
 
 public class UserMap : IEntityTypeConfiguration<User>
 {
@@ -56,6 +58,30 @@ public class UserMap : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasColumnName("role")
             .HasConversion<int>();
+        
+        // Gerando Seed Inicial
+
+        builder.HasData(
+            new User(
+                firstName: "Artur",
+                lastName: "Admin",
+                email: "artur@admin.com",
+                password: "123456",
+                phone: "1999238-9992",
+                address: "123 Main Street",
+                role: UserRole.Admin
+            ) { Id = 1 }, 
+            new User(
+                firstName: "Artur",
+                lastName: "Normal",
+                email: "artur@normal.com",
+                password: "123456",
+                phone: "1999238-9992",
+                address: "123 Main Street",
+                role: UserRole.User
+            ) { Id = 2 }
+
+        );
 
     }
 }
