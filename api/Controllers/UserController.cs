@@ -2,6 +2,7 @@ using api.DTO;
 using api.Entities;
 using api.Mappers;
 using api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
@@ -35,6 +36,30 @@ public class UserController : ControllerBase
         catch (Exception e)
         {
             return Unauthorized(new { message = "Credenciais Invalidas" });
+        }
+    }
+
+
+    [HttpPost("register")]
+    [Authorize(Policy = "Admin")]
+    public async Task<IActionResult> Register([FromBody] UserRegisterDto registerDto)
+    {
+        if (registerDto == null)
+        {
+            return BadRequest("Dados Invalidos");
+        }
+
+        try
+        {
+            var user = UserMapper.RegisterDtoToEntity(registerDto);
+            await _userService.Insert(user);
+            
+            var result = UserMapper.ToRegisterDto(user);
+            return CreatedAtAction(nameof(Register), new{id = user.Id}, result);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, new { message = $"Erro ao registar usuario: {e.Message}" });
         }
     }
     

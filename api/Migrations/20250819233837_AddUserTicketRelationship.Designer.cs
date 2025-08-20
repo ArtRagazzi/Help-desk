@@ -11,8 +11,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250818225434_SeedUsers")]
-    partial class SeedUsers
+    [Migration("20250819233837_AddUserTicketRelationship")]
+    partial class AddUserTicketRelationship
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,9 @@ namespace api.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("lastUpdateDate");
 
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Severity")
                         .HasColumnType("INTEGER")
                         .HasColumnName("severity");
@@ -54,12 +57,9 @@ namespace api.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("title");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("ticket", (string)null);
                 });
@@ -141,9 +141,13 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Entities.Ticket", b =>
                 {
-                    b.HasOne("api.Entities.User", null)
+                    b.HasOne("api.Entities.User", "Owner")
                         .WithMany("Tickets")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("api.Entities.User", b =>

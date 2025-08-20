@@ -58,6 +58,10 @@ public class UserMap : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasColumnName("role")
             .HasConversion<int>();
+
+        builder.HasMany(x => x.Tickets)
+            .WithOne(x => x.Owner)
+            .HasForeignKey(x => x.OwnerId);
         
         // Gerando Seed Inicial
 

@@ -45,6 +45,13 @@ public class TicketMap : IEntityTypeConfiguration<Ticket>
             .IsRequired()
             .HasColumnName("lastUpdateDate")
             .HasColumnType("datetime");
+        
+        
+        //N:1 com ticket -> user
+        builder.HasOne(x => x.Owner)
+            .WithMany(x=> x.Tickets)
+            .HasForeignKey(x => x.OwnerId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
     
 }

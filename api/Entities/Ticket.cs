@@ -4,12 +4,15 @@ namespace api.Entities;
 
 public class Ticket : EntityBase
 {
-    public Ticket(string title, string description, Severity severity, StatusTicket status)
+    private Ticket() { }
+    public Ticket(string title, string description, Severity severity, StatusTicket status, User owner)
     {
         Title = title;
         Description = description;
         Severity = severity;
         Status = status;
+        Owner = owner;
+        OwnerId = owner.Id;
         CreationDate = DateTime.Now;
         LastUpdateDate = DateTime.Now;
     }
@@ -20,6 +23,8 @@ public class Ticket : EntityBase
     public StatusTicket Status { get; private set; }
     public DateTime CreationDate { get; private set; }
     public DateTime LastUpdateDate { get; private set; }
+    public int OwnerId { get; private set; }
+    public User Owner { get; private set; }
     
     
     public void ChangeStatus(StatusTicket status)
@@ -35,6 +40,12 @@ public class Ticket : EntityBase
         this.Severity = ticket.Severity;
         this.Status = ticket.Status;
         this.CreationDate = DateTime.Now;
+        this.LastUpdateDate = DateTime.Now;
+    }
+
+    public void ChangeOwner(User user)
+    {
+        this.Owner = user;
         this.LastUpdateDate = DateTime.Now;
     }
     
