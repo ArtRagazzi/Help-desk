@@ -15,6 +15,8 @@ AuthorizationConfig(builder);
 ConfigureServices(builder);
 
 var app = builder.Build();
+ConfigureSwagger(app);
+
 app.UseCors("PermitirFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
@@ -56,6 +58,7 @@ void AuthorizationConfig(WebApplicationBuilder builder)
 
 void ConfigureServices(WebApplicationBuilder builder)
 {
+    builder.Services.AddOpenApi();
     builder.Services.AddCors(options=>{
         options.AddPolicy("PermitirFrontend",policy=>{
             policy.WithOrigins("http://localhost:5173","http://localhost:5174")
@@ -71,4 +74,13 @@ void ConfigureServices(WebApplicationBuilder builder)
     
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddControllers();
+}
+
+void ConfigureSwagger(WebApplication app)
+{
+    app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "Api V1");
+    });
 }
