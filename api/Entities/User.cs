@@ -19,6 +19,12 @@ public class User : EntityBase
         Address = address;
         Role = role;
         _tickets = new List<Ticket>();
+
+
+        if (role != UserRole.Admin && role != UserRole.User)
+        {
+            this.Role = UserRole.User;
+        }
     }
 
     public string FirstName { get; private set; }
@@ -59,6 +65,16 @@ public class User : EntityBase
         this.Phone = user.Phone;
         this.Address = user.Address;
         this.Role = user.Role;
+        
+        if (user.Role != UserRole.Admin && user.Role != UserRole.User)
+        {
+            this.Role = UserRole.User;
+        }
+    }
+    
+    public void ChangePassword(string password)
+    {
+        this.Password = password;
     }
     
 }

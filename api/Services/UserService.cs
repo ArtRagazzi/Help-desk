@@ -1,6 +1,8 @@
 
 using api.Data;
 using api.Entities;
+using api.Entities.Enuns;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Services;
@@ -31,7 +33,7 @@ public class UserService : IUserService
 
     public async Task<User> GetById(int id)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         if (user != null)
         {
             return user;
@@ -51,18 +53,25 @@ public class UserService : IUserService
 
     public async Task<User> FindByEmailAndPassword(string email, string password)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == email && x.Password == password);
-        if (user != null)
-        {
-            return user;
-        }
-        throw new Exception("User not found");
-    }
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+        if (user == null)
+            throw new Exception("User not found");
 
-    public async  Task Insert(User user)
+        
+        if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
+            throw new Exception("Invalid credentials");
+
+        return user;
+    }
+    
+
+    public async Task Insert(User user)
     {
         try
         {
+            
+            user.ChangePassword(BCrypt.Net.BCrypt.HashPassword(user.Password));
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
         }
@@ -80,6 +89,7 @@ public class UserService : IUserService
             throw new Exception("User not found");
         }
         existingUser.EditUser(user);
+        user.ChangePassword(BCrypt.Net.BCrypt.HashPassword(user.Password));
         _context.Users.Update(existingUser);
         await _context.SaveChangesAsync();
     }

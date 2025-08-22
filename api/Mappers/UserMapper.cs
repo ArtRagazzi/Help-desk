@@ -50,5 +50,18 @@ public static class UserMapper
             role: dto.Role
         );
     }
+
+    public static User UpdateDtoToEntity(UserUpdateDto dto)
+    {
+        return new User(
+            firstName: dto.FirstName,
+            lastName: dto.LastName,
+            email: dto.Email,
+            password: dto.Password,
+            phone: dto.Phone,
+            address: dto.Address,
+            role: dto.Role
+        );
+    }
     
 }
