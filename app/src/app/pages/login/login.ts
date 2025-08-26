@@ -9,4 +9,15 @@ import { Component } from '@angular/core';
 })
 export class Login {
 
+  loginObj: LoginModel = new LoginModel();
+}
+
+export class LoginModel {
+  email: string;
+  password: string;
+
+  constructor() {
+    this.email = "";
+    this.password = ""
+  }
 }
