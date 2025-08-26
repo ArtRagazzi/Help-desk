@@ -5,6 +5,7 @@ import { rotaGuard } from './autenticacao/rota-guard';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
-  { path: 'home', component: Home, canActivate: [rotaGuard] },
+  { path: 'home', component: Home }/*, canActivate: [rotaGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
-];
+];*/
+]
