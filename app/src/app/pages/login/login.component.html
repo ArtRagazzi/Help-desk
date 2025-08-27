@@ -1,0 +1,32 @@
+<!-- login.component.html -->
+<section>
+  <div class="login">
+    <div class="login-left-side">
+
+    </div>
+
+    <div class="login-right-side">
+      <div class="form-content">
+        <h1 class="title">Login</h1>
+        <div>
+          <p>Email</p>
+          <input type="text" name="email" [(ngModel)]="loginObj.email" placeholder="Email">
+        </div>
+        <div>
+          <p>Senha</p>
+          <input type="text" name="password" [(ngModel)]="loginObj.password" placeholder="Senha">
+        </div>
+        <button (click)="onLogin()">Entrar</button>
+
+        <!-- Mensagem de status aparece aqui -->
+        @if (loginStatusMessage()) {
+        <p class="status-message">{{ loginStatusMessage() }}</p>
+        }
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p class="footerMessage">Alguns direitos reservado</p>
+  </footer>
+</section>
