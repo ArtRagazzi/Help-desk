@@ -52,7 +52,7 @@ void AuthorizationConfig(WebApplicationBuilder builder)
     builder.Services.AddAuthorization(options =>
     {
         options.AddPolicy("Admin", policy => policy.RequireRole(UserRole.Admin.ToString()));
-        options.AddPolicy("User", policy => policy.RequireRole(UserRole.User.ToString()));
+        options.AddPolicy("User", policy => policy.RequireRole(UserRole.User.ToString(), UserRole.Admin.ToString()));
     });
 }
 
@@ -73,6 +73,7 @@ void ConfigureServices(WebApplicationBuilder builder)
     });
     
     builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<ITicketService, TicketService>();
     builder.Services.AddControllers();
 }
 

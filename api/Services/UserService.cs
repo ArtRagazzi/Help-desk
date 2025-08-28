@@ -3,6 +3,7 @@ using api.Data;
 using api.Entities;
 using api.Entities.Enuns;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Services;
@@ -20,20 +21,12 @@ public class UserService : IUserService
     
     public async Task<IEnumerable<User>> GetAll()
     {
-        try
-        {
-            return await _context.Users.AsNoTracking().ToListAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return Enumerable.Empty<User>();
-        }
+        return await _context.Users.Include( u=> u.Tickets).AsNoTracking().ToListAsync();
     }
 
     public async Task<User> GetById(int id)
     {
-        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        var user = await _context.Users.Include( u=> u.Tickets).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         if (user != null)
         {
             return user;
@@ -67,18 +60,9 @@ public class UserService : IUserService
 
     public async Task Insert(User user)
     {
-        try
-        {
-            
             user.ChangePassword(BCrypt.Net.BCrypt.HashPassword(user.Password));
-
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
     }
 
     public async Task Update(User user, int id)

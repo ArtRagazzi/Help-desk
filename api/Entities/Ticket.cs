@@ -5,14 +5,13 @@ namespace api.Entities;
 public class Ticket : EntityBase
 {
     private Ticket() { }
-    public Ticket(string title, string description, Severity severity, StatusTicket status, User owner)
+    public Ticket(string title, string description, Severity severity, StatusTicket status, int ownerId)
     {
         Title = title;
         Description = description;
         Severity = severity;
         Status = status;
-        Owner = owner;
-        OwnerId = owner.Id;
+        OwnerId = ownerId;
         CreationDate = DateTime.Now;
         LastUpdateDate = DateTime.Now;
     }
@@ -39,13 +38,12 @@ public class Ticket : EntityBase
         this.Description = ticket.Description;
         this.Severity = ticket.Severity;
         this.Status = ticket.Status;
-        this.CreationDate = DateTime.Now;
         this.LastUpdateDate = DateTime.Now;
     }
 
-    public void ChangeOwner(User user)
+    public void ChangeOwner(int ownerId)
     {
-        this.Owner = user;
+        this.OwnerId = ownerId;
         this.LastUpdateDate = DateTime.Now;
     }
     
