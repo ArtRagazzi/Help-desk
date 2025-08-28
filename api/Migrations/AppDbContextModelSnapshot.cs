@@ -110,30 +110,6 @@ namespace api.Migrations
                         .IsUnique();
 
                     b.ToTable("user", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "123 Main Street",
-                            Email = "artur@admin.com",
-                            FirstName = "Artur",
-                            LastName = "Admin",
-                            Password = "123456",
-                            Phone = "1999238-9992",
-                            Role = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "123 Main Street",
-                            Email = "artur@normal.com",
-                            FirstName = "Artur",
-                            LastName = "Normal",
-                            Password = "123456",
-                            Phone = "1999238-9992",
-                            Role = 2
-                        });
                 });
 
             modelBuilder.Entity("api.Entities.Ticket", b =>

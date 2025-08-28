@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUserTicketRelationship : Migration
+    public partial class UpdateDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,15 +53,6 @@ namespace api.Migrations
                         principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "user",
-                columns: new[] { "Id", "address", "email", "first_name", "last_name", "password", "phone", "role" },
-                values: new object[,]
-                {
-                    { 1, "123 Main Street", "artur@admin.com", "Artur", "Admin", "123456", "1999238-9992", 1 },
-                    { 2, "123 Main Street", "artur@normal.com", "Artur", "Normal", "123456", "1999238-9992", 2 }
                 });
 
             migrationBuilder.CreateIndex(

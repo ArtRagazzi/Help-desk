@@ -4,12 +4,14 @@ using api.Mappers;
 using api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
 
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v1/user")]
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _configuration;
@@ -41,7 +43,6 @@ public class UserController : ControllerBase
 
 
     [HttpPost("register")]
-    [Authorize(Policy = "Admin")]
     public async Task<IActionResult> Register([FromBody] UserRegisterDto registerDto)
     {
         if (registerDto == null)
@@ -53,9 +54,13 @@ public class UserController : ControllerBase
         {
             var user = UserMapper.RegisterDtoToEntity(registerDto);
             await _userService.Insert(user);
-            
+
             var result = UserMapper.ToRegisterDto(user);
-            return CreatedAtAction(nameof(Register), new{id = user.Id}, result);
+            return CreatedAtAction(nameof(Register), new { id = user.Id }, result);
+        }
+        catch (DbUpdateException e)
+        {
+            return StatusCode(500, new { message = $"Erro ao registar usuario, email ja existente:\n{e.Message}" });
         }
         catch (Exception e)
         {
@@ -68,7 +73,8 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var users = await _userService.GetAll();
-        return Ok(users);
+        var usersDto = users.Select(UserMapper.ToWithTicketsDto).ToList();
+        return Ok(usersDto);
     }
     
     [HttpGet("{id:int}")]

@@ -18,15 +18,15 @@ public class TicketService: ITicketService
     
     public async Task<IEnumerable<Ticket>> GetAll()
     {
-        try
-        {
-            return await _context.Tickets.AsNoTracking().ToListAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return Enumerable.Empty<Ticket>();
-        }
+        return await _context.Tickets.AsNoTracking().ToListAsync();
+    }
+    
+    public async Task<IEnumerable<Ticket>> GetAllWithOwner()
+    {
+        return await _context.Tickets
+            .Include(t => t.Owner)
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task<Ticket> GetById(int id)
@@ -84,15 +84,8 @@ public class TicketService: ITicketService
 
     public async Task Insert(Ticket ticket)
     {
-        try
-        {
-            _context.Tickets.Add(ticket);
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
+        _context.Tickets.Add(ticket);
+        await _context.SaveChangesAsync();
     }
 
     public async Task Update(Ticket ticket, int id)

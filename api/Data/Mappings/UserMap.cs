@@ -63,29 +63,5 @@ public class UserMap : IEntityTypeConfiguration<User>
             .WithOne(x => x.Owner)
             .HasForeignKey(x => x.OwnerId);
         
-        // Gerando Seed Inicial
-
-        builder.HasData(
-            new User(
-                firstName: "Artur",
-                lastName: "Admin",
-                email: "artur@admin.com",
-                password: "123456",
-                phone: "1999238-9992",
-                address: "123 Main Street",
-                role: UserRole.Admin
-            ) { Id = 1 }, 
-            new User(
-                firstName: "Artur",
-                lastName: "Normal",
-                email: "artur@normal.com",
-                password: "123456",
-                phone: "1999238-9992",
-                address: "123 Main Street",
-                role: UserRole.User
-            ) { Id = 2 }
-
-        );
-
     }
 }

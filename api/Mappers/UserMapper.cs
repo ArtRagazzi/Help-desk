@@ -64,4 +64,15 @@ public static class UserMapper
         );
     }
     
+    public static UserWithTicketsDto ToWithTicketsDto(User user)
+    {
+        return new UserWithTicketsDto
+        {
+            FirstName = user.FirstName,
+            Email = user.Email,
+            Role = (Int32)user.Role,
+            Tickets = user.Tickets.Select(TicketMapper.ToDto).ToList()
+        };
+    }
+    
 }
