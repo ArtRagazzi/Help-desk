@@ -51,4 +51,97 @@ public class TicketController : ControllerBase
         var ticketsDto = tickets.Select(TicketMapper.ToWithOwnerDto).ToList();
         return Ok(ticketsDto);
     }
+    
+    [HttpGet("search/title")]
+    [Authorize(Policy = "User")]
+    public async Task<IActionResult> FindByTitle([FromQuery] string title)
+    {
+        var tickets = await _ticketService.FindByTitle(title);
+        return Ok(tickets.Select(TicketMapper.ToDto));
+    }
+
+    [HttpGet("search/severity")]
+    [Authorize(Policy = "User")]
+    public async Task<IActionResult> FindBySeverity([FromQuery] Severity severity)
+    {
+        var tickets = await _ticketService.FindBySeverity(severity);
+        return Ok(tickets.Select(TicketMapper.ToDto));
+    }
+
+    [HttpGet("search/status")]
+    [Authorize(Policy = "User")]
+    public async Task<IActionResult> FindByStatus([FromQuery] StatusTicket status)
+    {
+        var tickets = await _ticketService.FindByStatus(status);
+        return Ok(tickets.Select(TicketMapper.ToDto));
+    }
+    
+    [HttpGet("{id:int}")]
+    [Authorize(Policy = "User")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        try
+        {
+            var ticket = await _ticketService.GetById(id);
+            return Ok(TicketMapper.ToDto(ticket));
+        }
+        catch (Exception ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+    
+    [HttpPut("{id:int}")]
+    [Authorize(Policy = "User")]
+    public async Task<IActionResult> Update([FromBody] TicketUpdateDto dto, int id)
+    {
+        try
+        {
+            if (dto == null)
+            {
+                throw new ApplicationException("Não foi possível atualizar o ticket");
+            }
+
+            var ticketEntity = new Ticket(
+                title: dto.Title,
+                description: dto.Description,
+                severity: dto.Severity,  
+                status: dto.Status,
+                ownerId: dto.OwnerId
+            );
+
+            await _ticketService.Update(ticketEntity, id);
+
+            var response = new
+            {
+                Id = id,
+                Title = dto.Title,
+                Description = dto.Description,
+                Severity = dto.Severity.ToString(),
+                Status = dto.Status.ToString(),
+                OwnerId = dto.OwnerId
+            };
+
+            return Ok(response);
+        }
+        catch (Exception e)
+        {
+            return NotFound(new { message = e.Message });
+        }
+    }
+
+    [HttpDelete("{id:int}")]
+    [Authorize(Policy = "User")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _ticketService.Delete(id);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
 }

@@ -41,45 +41,26 @@ public class TicketService: ITicketService
 
     public async Task<IEnumerable<Ticket>> FindByTitle(string title)
     {
-        IEnumerable<Ticket> tickets;
-        if (!string.IsNullOrEmpty(title))
-        {
-            tickets = await _context.Tickets.Where(x => x.Title == title).ToListAsync();
-        }
-        else
-        {
-            tickets = await GetAll();
-        }
-        return tickets;
-        
+        if (string.IsNullOrWhiteSpace(title))
+            return await GetAll();
+
+        return await _context.Tickets
+            .Where(x => x.Title.ToLower().Contains(title.ToLower()))
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Ticket>> FindBySeverity(Severity severity)
     {
-        IEnumerable<Ticket> tickets;
-        if (!string.IsNullOrEmpty(severity.ToString()))
-        {
-            tickets = await _context.Tickets.Where(x => x.Severity == severity).ToListAsync();
-        }
-        else
-        {
-            tickets = await GetAll();
-        }
-        return tickets;
+        return await _context.Tickets
+            .Where(x => x.Severity == severity)
+            .ToListAsync();
     }
-
+    
     public async Task<IEnumerable<Ticket>> FindByStatus(StatusTicket status)
     {
-        IEnumerable<Ticket> tickets;
-        if (!string.IsNullOrEmpty(status.ToString()))
-        {
-            tickets = await _context.Tickets.Where(x => x.Status == status).ToListAsync();
-        }
-        else
-        {
-            tickets = await GetAll();
-        }
-        return tickets;
+        return await _context.Tickets
+            .Where(x => x.Status == status)
+            .ToListAsync();
     }
 
     public async Task Insert(Ticket ticket)

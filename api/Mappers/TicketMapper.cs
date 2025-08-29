@@ -12,6 +12,8 @@ public class TicketMapper
             Title = ticket.Title,
             Description = ticket.Description,
             Severity = ticket.Severity.ToString(),
+            Status = ticket.Status.ToString(),
+            LastUpdated = ticket.LastUpdateDate,
             CreationDate = ticket.CreationDate
         };
     }

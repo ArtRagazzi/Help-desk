@@ -83,13 +83,14 @@ public class UserController : ControllerBase
         try
         {
             var user = await _userService.GetById(id);
-            return Ok(user);
+            return Ok(UserMapper.ToWithTicketsDto(user));
         }
         catch
         {
             return NotFound(new { message = "Usuário não encontrado" });
         }
     }
+    
     [HttpDelete("{id:int}")]
     [Authorize(Policy = "Admin")]
     public async Task<IActionResult> Delete(int id)
